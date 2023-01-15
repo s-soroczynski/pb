@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  dev:
+    # stdin_open: true # put you inside the container
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      # - "app/node_modules" # in case you need to debug some node_modules
+      - "./:/app" # HOT Reload enabled
