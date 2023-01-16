@@ -1,9 +1,10 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { LoadingButton } from "@mui/lab";
 import { TextField, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
 import { Template } from "../../common/Template/Template";
-import { BASE_URL } from "../../constants";
+import { BASE_URL, ROUTES } from "../../constants";
 import { setItemToLocalStorage } from "../../helpers";
 import { styles } from "./styles";
 
@@ -50,6 +51,9 @@ export const Login = () => {
           variant="outlined"
           {...register("password", { required: true })}
         />
+        <Typography>
+          <Link to={ROUTES.HOME}>Załóż konto</Link>
+        </Typography>
         <LoadingButton sx={styles.submit} variant="contained" type="submit">
           Wyślij
         </LoadingButton>
