@@ -34,13 +34,28 @@ async def public_toilets(id: int = Path, db: Session = Depends(get_db)):
 
 @router.post("/", status_code=201)
 async def public_toilets(
-    item: schemas.PublicToilet,
+    public_toilet: schemas.PublicToilet,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    db_public_toilet = crud.get_public_toilet_by_name(db, name=item.name)
+    db_public_toilet = crud.get_public_toilet_by_name(db, name=public_toilet.name)
     if db_public_toilet:
         raise HTTPException(status_code=400, detail="Name already taken")
     return crud.create_public_toilet(
-        db=db, item=item, user=current_user
+        db=db, public_toilet=public_toilet, user=current_user
     )
+
+
+@router.patch("/{id}", response_model=schemas.PublicToilet)
+async def update_public_toilet(
+    id: str,
+    item: schemas.PublicToilet,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)):
+    existing_item = crud.get_public_toilet(db, id)
+    if existing_item is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Public toilet with id {id} does not exist",
+        )
+    return crud.update_public_toilet(db, item=item, id=id)
